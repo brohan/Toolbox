@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# -eq 0]
+if [ $1 == ""]
 	then
 		echo "This script requires a file with IP's to run against"
 fi
