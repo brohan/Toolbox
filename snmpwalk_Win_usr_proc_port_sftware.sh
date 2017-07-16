@@ -1,8 +1,7 @@
 #!/bin/bash
 
-if [ $1 == ""]
-	then
-		echo "This script requires a file with IP's to run against"
+if [[ $# -eq 0 ]]; then
+	echo "This script requires a file with IP's to run against"
 fi
 
 for ip in $1
