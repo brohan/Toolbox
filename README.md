@@ -1,2 +1,2 @@
 # OSCP_Scripts
-Scripts made during OSCP manual and beyond
+Interesting scripts made or found during the OSCP process
