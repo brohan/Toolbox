@@ -1,0 +1,19 @@
+Once you have a not so nice rev shell you can upgrade it to have tab complete etc if there is python installed on the machine using the following:
+
+
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+Ctrl+z to background process
+
+echo $TERM   (usually xterm-256color)
+stty -a  (remember the rows and columns, don't adjust the console after entering these #'s)
+
+stty raw -echo
+
+fg (press enter you won't see the fg in the terminal)
+
+reset
+
+export SHELL=bash
+export TERM=xterm-256color
+stty rows <ur rows here> columns <ur columns here>
