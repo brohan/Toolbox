@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script by deep-ping
+# script by deep-ping 
 
 if [ $# -ne 3 ]; then
     echo "usage:"
@@ -24,6 +24,6 @@ do
     read -p "Scan with $line? " -n 1 -r </dev/tty
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        nmap -v -Pn -sU -p $port $targ --script $line 2>&1 | tee nse-$line-$targ.txt
+        nmap -v -Pn -p $port $targ --script $line 2>&1 | tee nse-$line-$targ.txt
     fi
 done
